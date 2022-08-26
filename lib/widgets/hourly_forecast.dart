@@ -10,12 +10,12 @@ class HourlyForecast extends StatelessWidget {
   HourlyForecast(this.height, this.time, this.temp);
 
   String selectCloud(){
-    if(temp>=30&&temp<38){
-      return "images/icons/cloudy.png";
+    if(temp>=25&&temp<38){
+      return "assets/images/icons/cloudy_icon.png";
     }else if(temp>38){
-      return "images/icons/sunny.png";
-    }else if(temp<29){
-      return "images/icons/rainy.png";
+      return "assets/images/icons/sunny_icon.png";
+    }else if(temp<25){
+      return "assets/images/icons/rainy_icon.png";
     }else{
       return "";
     }
@@ -59,7 +59,7 @@ class HourlyForecast extends StatelessWidget {
             children: [
               Container(
                 height: height*0.012,
-                child: Image.asset("images/icons/navigate.png"),
+                child: Image.asset("assets/images/icons/navigate_icon.png"),
               ),
               Text("Air",style: TextStyle(
                 fontSize: height * 0.0175,

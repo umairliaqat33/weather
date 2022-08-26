@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:weather/screens/home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Cairo',
+      ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: SafeArea(
-          child: HomeScreen(),
-        ),
+        body: HomeScreen(),
       ),
     );
   }

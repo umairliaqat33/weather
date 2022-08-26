@@ -19,8 +19,9 @@ class AQI extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
+              padding: EdgeInsets.only(right: 4),
               height: height * 0.012,
-              child: Image.asset("images/leaf.png"),
+              child: Image.asset("assets/images/icons/leaf.png"),
             ),
             Text(
               "AQI",
