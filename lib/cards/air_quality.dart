@@ -4,8 +4,10 @@ import '../models/weather_model.dart';
 
 class AirQuality extends StatefulWidget {
   double height;
+  int isCity;
+  String city;
 
-  AirQuality(this.height);
+  AirQuality(this.height,this.city,this.isCity);
 
   @override
   State<AirQuality> createState() => _AirQualityState();
@@ -23,7 +25,7 @@ class _AirQualityState extends State<AirQuality> {
 
   getAQI()async{
     WeatherModel weatherModel = WeatherModel('https\://api.openweathermap.org/data/2.5/air_pollution');
-    var weatherData = await weatherModel.getLocationWeather();
+    var weatherData = (widget.isCity==1?await weatherModel.getCityWeather(widget.city): await weatherModel.getLocationWeather());
     if(weatherData!=null){
       setState(() {
         aqi=int.parse((weatherData['list'][0]['main']['aqi']).toString());

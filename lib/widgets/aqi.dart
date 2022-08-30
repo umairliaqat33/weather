@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import '../models/weather_model.dart';
 
 class AQI extends StatefulWidget {
+  String city;
+  int isCity;
   double height;
-  AQI(this.height);
+  AQI(this.height,this.city,this.isCity);
 
   @override
   State<AQI> createState() => _AQIState();
@@ -21,7 +23,7 @@ class _AQIState extends State<AQI> {
 
   getAQI()async{
     WeatherModel weatherModel = WeatherModel('https\://api.openweathermap.org/data/2.5/air_pollution');
-    var weatherData = await weatherModel.getLocationWeather();
+    var weatherData = (widget.isCity==1?await weatherModel.getCityWeather(widget.city): await weatherModel.getLocationWeather());
     if(weatherData!=null){
       setState(() {
         aqi=int.parse((weatherData['list'][0]['main']['aqi']).toString());

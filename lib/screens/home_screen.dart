@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:weather/models/constants.dart';
 import 'package:weather/models/weather_model.dart';
 import 'package:weather/screens/five_day_forecast.dart';
 import 'package:weather/widgets/aqi.dart';
-import 'package:weather/widgets/hourly_forecast.dart';
 
 import '../widgets/day_forecast.dart';
 
@@ -19,10 +19,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   double height = 0;
-
   double width = 0;
-
+  int isCity=0;
   var weatherData;
+  final weatherFieldController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   int temperature = 0;
   double feel = 0;
@@ -98,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
       humidity = weatherData['list'][0]['main']['humidity'];
       atm = weatherData['list'][0]['main']['pressure'];
       speed = (weatherData['list'][0]['wind']['speed']);
+      isCity=0;
       /*Current Weather */
 
       /*Today Weather */
@@ -121,16 +123,28 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  String selectImage() {
+    if (condition=="Clouds") {
+      return "assets/images/cloudy.png";
+    } else if (condition=="Rain") {
+      return "assets/images/rainy.png";
+    } else if (condition=="Clear") {
+      return "assets/images/moderate.png";
+    } else {
+      return "";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    return Stack(
+    return weatherData==null?Center(child: CircularProgressIndicator()):Stack(
       children: [
         Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/rainy.png'),
+              image: AssetImage(selectImage()),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
                   Colors.white.withOpacity(0.8), BlendMode.dstATop),
@@ -161,12 +175,63 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: TextFormField(
                   textAlign: TextAlign.center,
+                  controller: weatherFieldController,
                   decoration: kMessageTextFieldDecoration.copyWith(
-                    hintText: 'Enter complete name of city',
-                    fillColor: Color(0xffE7E6E6),
-                    filled: true,
-                    prefixIcon: Icon(Icons.search),
-                  ),
+                      hintText: 'Enter complete name of city',
+                      fillColor: Color(0xffE7E6E6),
+                      filled: true,
+                      // prefixIcon: Icon(Icons.search),
+                      suffixIcon: IconButton(
+                        onPressed: () async{
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          WeatherModel weatherModel = WeatherModel('https\://api.openweathermap.org/data/2.5/forecast');
+                          weatherData = await weatherModel.getCityWeather(weatherFieldController.text);
+                          sleep(Duration(seconds: 3));
+                          setState(() {
+                            if (weatherData == null) {
+                              temperature = 0;
+                              feel = 0;
+                              condition = "null";
+                              cityName = "null";
+                              humidity = 0;
+                              atm = 0;
+                              speed = 0;
+                              return;
+                            }
+                            /*Current Weather */
+                            double temp = weatherData['list'][0]['main']['temp'];
+                            temperature = temp.toInt();
+                            feel = (weatherData['list'][0]['main']['feels_like']);
+                            condition = weatherData['list'][0]['weather'][0]['main'];
+                            cityName = weatherData['city']['name'];
+                            humidity = weatherData['list'][0]['main']['humidity'];
+                            atm = weatherData['list'][0]['main']['pressure'];
+                            speed = (weatherData['list'][0]['wind']['speed']);
+                            isCity=1;
+                            /*Current Weather */
+
+                            /*Today Weather */
+                            today_min = weatherData['list'][0]['main']['temp_min'];
+                            today_max = weatherData['list'][7]['main']['temp_max'];
+                            todayTemp = weatherData['list'][3]['main']['temp'];
+                            todayDay = "Today";
+                            /*Today Weather */
+                            /*Second Day Weather */
+                            tomorrow_min = weatherData['list'][8]['main']['temp_min'];
+                            tomorrow_max = weatherData['list'][15]['main']['temp_max'];
+                            tomorrowTemp = weatherData['list'][11]['main']['temp'];
+                            tomorrowDay = "Tomorrow";
+                            /*Second Day Weather */
+                            /*Third Day Weather */
+                            thirdDay_min = weatherData['list'][16]['main']['temp_min'];
+                            thirdDay_max = weatherData['list'][23]['main']['temp_max'];
+                            thirdDayTemp = weatherData['list'][19]['main']['temp'];
+                            thirdDayDay = weekDay((DateTime.tryParse(weatherData['list'][19]['dt_txt'])?.weekday));
+                            /*Third Day Weather */
+                          });
+                        },
+                        icon: Icon(Icons.search),
+                      )),
                 ),
               ),
               Column(
@@ -203,8 +268,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  AQI(height),
-                  HourlyForecastCreation(height),
+                  AQI(height,weatherFieldController.text,isCity),
+                  HourlyForecastCreation(height,weatherFieldController.text,isCity),
                   Container(
                     decoration: BoxDecoration(
                         color: Color(0xffFFFF).withOpacity(0.4),
@@ -238,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => FiveDayForecast(height),
+                              builder: (context) => FiveDayForecast(isCity,weatherFieldController.text),
                             ),
                           );
                         },
@@ -279,7 +344,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                  AirQuality(height),
+                  AirQuality(height,weatherFieldController.text,isCity),
                 ],
               ),
             ],
