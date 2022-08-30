@@ -1,10 +1,35 @@
 import 'package:flutter/material.dart';
 
-class AirQuality extends StatelessWidget {
+import '../models/weather_model.dart';
+
+class AirQuality extends StatefulWidget {
   double height;
 
   AirQuality(this.height);
 
+  @override
+  State<AirQuality> createState() => _AirQualityState();
+}
+
+class _AirQualityState extends State<AirQuality> {
+  int aqi=0;
+
+  @override
+  void initState() {
+    super.initState();
+    getAQI();
+  }
+
+
+  getAQI()async{
+    WeatherModel weatherModel = WeatherModel('https\://api.openweathermap.org/data/2.5/air_pollution');
+    var weatherData = await weatherModel.getLocationWeather();
+    if(weatherData!=null){
+      setState(() {
+        aqi=int.parse((weatherData['list'][0]['main']['aqi']).toString());
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +46,7 @@ class AirQuality extends StatelessWidget {
             "Air Quality Index",
             style: TextStyle(
               color: Colors.white,
-              fontSize: height * 0.0175,
+              fontSize: widget.height * 0.0175,
             ),
           ),
           Row(
@@ -31,21 +56,21 @@ class AirQuality extends StatelessWidget {
                 text: TextSpan(
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      fontSize: height * 0.0175,
+                      fontSize: widget.height * 0.0175,
                       color: Colors.white,
                     ),
                     children: [
                       WidgetSpan(
                         child: Container(
                           margin: EdgeInsets.only(left: 10, right: 5),
-                          height: height * 0.03,
-                          child: Image.asset("assets/images/icons/leaf.png"),
+                          height: widget.height * 0.03,
+                          child: Image.asset("assets/images/icons/leaf_icon.png"),
                         ),
                       ),
                       TextSpan(
-                        text: "17",
+                        text: aqi.toString(),
                         style: TextStyle(
-                          fontSize: height * 0.03,
+                          fontSize: widget.height * 0.03,
                           color: Colors.white,
                         ),
                       )
@@ -55,7 +80,7 @@ class AirQuality extends StatelessWidget {
                 "Full air quality forecast",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: height * 0.0175,
+                  fontSize: widget.height * 0.0175,
                 ),
               ),
             ],

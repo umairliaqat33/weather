@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 class DayForecast extends StatelessWidget {
   double height;
-  int temp;
+  String day;
+  double temp_min;
+  double temp_max;
+  double temp;
+  DayForecast(this.height,this.day,this.temp_max,this.temp_min,this.temp);
 
-  DayForecast(this.temp,this.height);
 
   String selectPicture() {
     if (temp >= 25 && temp < 38) {
@@ -39,7 +42,7 @@ class DayForecast extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: "Today - Weather Condition",
+                  text: "$day",
                   style: TextStyle(
                     fontSize: height * 0.0175,
                     color: Colors.white,
@@ -48,7 +51,7 @@ class DayForecast extends StatelessWidget {
               ]),
         ),
         Text(
-          "26\u00B0/30\u00B0",
+          "$temp_min\u00B0/$temp_max\u00B0",
           style: TextStyle(
             color: Colors.white,
             fontSize: height * 0.0175,
