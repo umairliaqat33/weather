@@ -1,12 +1,13 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import '../models/weather_model.dart';
 
+// ignore: must_be_immutable
 class DailyForecast extends StatefulWidget {
-  DailyForecast(this.height, this.index,this.city,this.isCity);
-  int isCity;
+  DailyForecast(this.height, this.index, this.city, this.isCity);
+
+  bool isCity;
   String city;
   int index;
   double height;
@@ -42,17 +43,24 @@ class _DailyForecastState extends State<DailyForecast> {
     }
   }
   void updateUI() async {
-    WeatherModel weatherModel = WeatherModel('https\://api.openweathermap.org/data/2.5/forecast');
-    weatherData = (widget.isCity==1?await weatherModel.getCityWeather(widget.city): await weatherModel.getLocationWeather());
+    WeatherModel weatherModel =
+        WeatherModel('https\://api.openweathermap.org/data/2.5/forecast');
+    weatherData = (widget.isCity
+        ? await weatherModel.getCityWeather(widget.city)
+        : await weatherModel.getLocationWeather());
     setState(() {
       print(widget.index);
       print(widget.isCity);
       print(widget.city);
-      temp=weatherData['list'][widget.index]['main']['temp'];
-      time = weekDay((DateTime.tryParse(weatherData['list'][widget.index]['dt_txt'])?.weekday));
-      speed=weatherData['list'][widget.index]['wind']['speed'];
-      condition=weatherData['list'][widget.index]['weather'][0]['main'];
-      print((DateTime.tryParse(weatherData['list'][widget.index]['dt_txt'])?.weekday));
+      temp = weatherData['list'][widget.index]['main']['temp'];
+      time = weekDay(
+          (DateTime.tryParse(weatherData['list'][widget.index]['dt_txt'])
+              ?.weekday));
+      speed = double.parse(
+          (weatherData['list'][widget.index]['wind']['speed']).toString());
+      condition = weatherData['list'][widget.index]['weather'][0]['main'];
+      print((DateTime.tryParse(weatherData['list'][widget.index]['dt_txt'])
+          ?.weekday));
       print(condition);
       print(weatherData['list'][widget.index]['dt_txt']);
     });
@@ -80,18 +88,19 @@ class _DailyForecastState extends State<DailyForecast> {
   @override
   Widget build(BuildContext context) {
     return weatherData==null?CircularProgressIndicator(): Container(
-      padding: EdgeInsets.all(12),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            time,
-            style: TextStyle(
-              fontSize: widget.height * 0.0175,
-              color: Color(0xffEFF0F1),
-            ),
-          ),
-          Row(
+            height: 100,
+            padding: EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  time,
+                  style: TextStyle(
+                    fontSize: widget.height * 0.0175,
+                    color: Color(0xffEFF0F1),
+                  ),
+                ),
+                Row(
             children: [
               Text(
                 temp.toStringAsFixed(0),

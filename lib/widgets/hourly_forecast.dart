@@ -1,7 +1,7 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class HourlyForecast extends StatelessWidget {
   double height;
   String time ;
@@ -27,7 +27,7 @@ class HourlyForecast extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(16),
       child: Column(
         children: [
           Text(

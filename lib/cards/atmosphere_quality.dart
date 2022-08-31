@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class AtmosphereQuality extends StatelessWidget {
   double height;
   String title1;

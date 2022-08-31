@@ -1,37 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../models/weather_model.dart';
-
-class AQI extends StatefulWidget {
-  String city;
-  int isCity;
+// ignore: must_be_immutable
+class AQI extends StatelessWidget {
   double height;
-  AQI(this.height,this.city,this.isCity);
+  int aqi;
 
-  @override
-  State<AQI> createState() => _AQIState();
-}
+  AQI(this.height, this.aqi);
 
-class _AQIState extends State<AQI> {
-  int aqi=0;
-
-  @override
-  void initState() {
-    super.initState();
-    getAQI();
-  }
-
-  getAQI()async{
-    WeatherModel weatherModel = WeatherModel('https\://api.openweathermap.org/data/2.5/air_pollution');
-    var weatherData = (widget.isCity==1?await weatherModel.getCityWeather(widget.city): await weatherModel.getLocationWeather());
-    if(weatherData!=null){
-      setState(() {
-        aqi=int.parse((weatherData['list'][0]['main']['aqi']).toString());
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -47,18 +22,18 @@ class _AQIState extends State<AQI> {
           children: [
             Container(
               padding: EdgeInsets.only(right: 4),
-              height: widget.height * 0.012,
+              height: height * 0.012,
               child: Image.asset("assets/images/icons/leaf_icon.png"),
             ),
             Text(
               "AQI  ",
               style:
-                  TextStyle(fontSize: widget.height * 0.016, color: Color(0xffFDFDFD)),
+                  TextStyle(fontSize: height * 0.016, color: Color(0xffFDFDFD)),
             ),
             Text(
               aqi.toString(),
               style:
-                  TextStyle(fontSize: widget.height * 0.016, color: Color(0xffFDFDFD)),
+                  TextStyle(fontSize: height * 0.016, color: Color(0xffFDFDFD)),
             ),
           ],
         ),
