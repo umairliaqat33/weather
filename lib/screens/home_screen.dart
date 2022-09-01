@@ -1,16 +1,16 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
-
+import 'package:weather/cards/air_quality.dart';
 import 'package:weather/cards/atmosphere_quality.dart';
+import 'package:weather/screens/five_day_forecast.dart';
 import 'package:weather/services/constants.dart';
 import 'package:weather/services/weather_model.dart';
-import 'package:weather/screens/five_day_forecast.dart';
+import 'package:weather/widgets/aqi.dart';
+
 import '../widgets/day_forecast.dart';
 import '../widgets/hourly_forecast.dart';
-import 'package:weather/cards/air_quality.dart';
-import 'package:weather/widgets/aqi.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -19,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   double height = 0;
+  Color iconColor = Colors.grey;
   double width = 0;
   bool isCity = false;
   double lat = 0;
@@ -141,12 +142,14 @@ class _HomeScreenState extends State<HomeScreen> {
       double temp =
           double.parse((weatherData['list'][0]['main']['temp']).toString());
       temperature = temp.toInt();
-      feel = (weatherData['list'][0]['main']['feels_like']);
+      feel = double.parse(
+          (weatherData['list'][0]['main']['feels_like']).toString());
       condition = weatherData['list'][0]['weather'][0]['main'];
       cityName = weatherData['city']['name'];
       humidity = weatherData['list'][0]['main']['humidity'];
       atm = weatherData['list'][0]['main']['pressure'];
-      speed = (weatherData['list'][0]['wind']['speed']);
+      speed =
+          double.parse((weatherData['list'][0]['wind']['speed']).toString());
       isCity = false;
       /*Current Weather */
 
@@ -178,8 +181,8 @@ class _HomeScreenState extends State<HomeScreen> {
       thirdDayDay = weekDay(
           (DateTime.tryParse(weatherData['list'][19]['dt_txt'])?.weekday));
       /*Third Day Weather */
-      lat = weatherData['city']['coord']['lat'];
-      lon = weatherData['city']['coord']['lon'];
+      lat = double.parse((weatherData['city']['coord']['lat']).toString());
+      lon = double.parse((weatherData['city']['coord']['lon']).toString());
       getAQI(lat, lon);
       getHourlyData();
     });
@@ -212,14 +215,22 @@ class _HomeScreenState extends State<HomeScreen> {
       temp8 = double.parse((weatherData['list'][7]['main']['temp']).toString());
 
       /*Speed of air*/
-      speed1 = double.parse((weatherData['list'][0]['wind']['speed']).toString());
-      speed2 = double.parse((weatherData['list'][1]['wind']['speed']).toString());
-      speed3 =double.parse((weatherData['list'][2]['wind']['speed']).toString());
-      speed4 = double.parse((weatherData['list'][3]['wind']['speed']).toString());
-      speed5 = double.parse((weatherData['list'][4]['wind']['speed']).toString());
-      speed6 = double.parse((weatherData['list'][5]['wind']['speed']).toString());
-      speed7 = double.parse((weatherData['list'][6]['wind']['speed']).toString());
-      speed8 = double.parse((weatherData['list'][7]['wind']['speed']).toString());
+      speed1 =
+          double.parse((weatherData['list'][0]['wind']['speed']).toString());
+      speed2 =
+          double.parse((weatherData['list'][1]['wind']['speed']).toString());
+      speed3 =
+          double.parse((weatherData['list'][2]['wind']['speed']).toString());
+      speed4 =
+          double.parse((weatherData['list'][3]['wind']['speed']).toString());
+      speed5 =
+          double.parse((weatherData['list'][4]['wind']['speed']).toString());
+      speed6 =
+          double.parse((weatherData['list'][5]['wind']['speed']).toString());
+      speed7 =
+          double.parse((weatherData['list'][6]['wind']['speed']).toString());
+      speed8 =
+          double.parse((weatherData['list'][7]['wind']['speed']).toString());
 
 /*Time*/
       DateTime? dateTime1 = DateTime.tryParse(weatherData['list'][0]['dt_txt']);
@@ -272,12 +283,14 @@ class _HomeScreenState extends State<HomeScreen> {
         /*Current Weather */
         double temp = weatherData['list'][0]['main']['temp'];
         temperature = temp.toInt();
-        feel = (weatherData['list'][0]['main']['feels_like']);
+        feel = double.parse(
+            (weatherData['list'][0]['main']['feels_like']).toString());
         condition = weatherData['list'][0]['weather'][0]['main'];
         cityName = weatherData['city']['name'];
         humidity = weatherData['list'][0]['main']['humidity'];
         atm = weatherData['list'][0]['main']['pressure'];
-        speed = (weatherData['list'][0]['wind']['speed']);
+        speed =
+            double.parse((weatherData['list'][0]['wind']['speed']).toString());
         isCity = true;
         /*Current Weather */
 
@@ -309,8 +322,8 @@ class _HomeScreenState extends State<HomeScreen> {
         thirdDayDay = weekDay(
             (DateTime.tryParse(weatherData['list'][19]['dt_txt'])?.weekday));
         /*Third Day Weather */
-        lat = weatherData['city']['coord']['lat'];
-        lon = weatherData['city']['coord']['lon'];
+        lat = double.parse((weatherData['city']['coord']['lat']).toString());
+        lon = double.parse((weatherData['city']['coord']['lon']).toString());
         getAQI(lat, lon);
         getHourlyData();
       });
@@ -322,7 +335,10 @@ class _HomeScreenState extends State<HomeScreen> {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
     return weatherData == null
-        ? Center(child: CircularProgressIndicator())
+        ? Center(
+            child: CircularProgressIndicator(
+            color: Colors.grey,
+          ))
         : Stack(
             children: [
               Container(
@@ -384,19 +400,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                   }
                                   return null;
                                 },
+                                onTap: () {
+                                  setState(() {
+                                    iconColor = Colors.black;
+                                  });
+                                },
                                 controller: weatherFieldController,
                                 decoration:
-                                    kMessageTextFieldDecoration.copyWith(
+                                    Constants.kMessageTextFieldDecoration.copyWith(
                                         hintText: 'Enter complete name of city',
                                         fillColor: Color(0xffE7E6E6),
                                         filled: true,
                                         prefixIcon: IconButton(
                                           onPressed: () async {
+                                            setState(() {
+                                              iconColor = Colors.grey;
+                                            });
                                             getCityWeather();
                                           },
                                           icon: Icon(
                                             Icons.search,
-                                            color: Colors.grey,
+                                            color: iconColor,
                                           ),
                                         )),
                               ),
@@ -561,3 +585,5 @@ class _HomeScreenState extends State<HomeScreen> {
           );
   }
 }
+
+
