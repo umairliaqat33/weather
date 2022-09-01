@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:weather/cards/atmosphere_quality.dart';
-import 'package:weather/models/constants.dart';
-import 'package:weather/models/weather_model.dart';
+import 'package:weather/services/constants.dart';
+import 'package:weather/services/weather_model.dart';
 import 'package:weather/screens/five_day_forecast.dart';
 import '../widgets/day_forecast.dart';
 import '../widgets/hourly_forecast.dart';
@@ -212,14 +212,14 @@ class _HomeScreenState extends State<HomeScreen> {
       temp8 = double.parse((weatherData['list'][7]['main']['temp']).toString());
 
       /*Speed of air*/
-      speed1 = weatherData['list'][0]['wind']['speed'];
-      speed2 = weatherData['list'][1]['wind']['speed'];
-      speed3 = weatherData['list'][2]['wind']['speed'];
-      speed4 = weatherData['list'][3]['wind']['speed'];
-      speed5 = weatherData['list'][4]['wind']['speed'];
-      speed6 = weatherData['list'][5]['wind']['speed'];
-      speed7 = weatherData['list'][6]['wind']['speed'];
-      speed8 = weatherData['list'][7]['wind']['speed'];
+      speed1 = double.parse((weatherData['list'][0]['wind']['speed']).toString());
+      speed2 = double.parse((weatherData['list'][1]['wind']['speed']).toString());
+      speed3 =double.parse((weatherData['list'][2]['wind']['speed']).toString());
+      speed4 = double.parse((weatherData['list'][3]['wind']['speed']).toString());
+      speed5 = double.parse((weatherData['list'][4]['wind']['speed']).toString());
+      speed6 = double.parse((weatherData['list'][5]['wind']['speed']).toString());
+      speed7 = double.parse((weatherData['list'][6]['wind']['speed']).toString());
+      speed8 = double.parse((weatherData['list'][7]['wind']['speed']).toString());
 
 /*Time*/
       DateTime? dateTime1 = DateTime.tryParse(weatherData['list'][0]['dt_txt']);
@@ -390,12 +390,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                         hintText: 'Enter complete name of city',
                                         fillColor: Color(0xffE7E6E6),
                                         filled: true,
-                                        // prefixIcon: Icon(Icons.search),
-                                        suffixIcon: IconButton(
+                                        prefixIcon: IconButton(
                                           onPressed: () async {
                                             getCityWeather();
                                           },
-                                          icon: Icon(Icons.search),
+                                          icon: Icon(
+                                            Icons.search,
+                                            color: Colors.grey,
+                                          ),
                                         )),
                               ),
                             ),

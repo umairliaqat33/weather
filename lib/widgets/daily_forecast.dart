@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-import '../models/weather_model.dart';
+import '../services/weather_model.dart';
 
 // ignore: must_be_immutable
 class DailyForecast extends StatefulWidget {
