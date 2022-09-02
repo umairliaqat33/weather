@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:weather/screens/home_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

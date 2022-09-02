@@ -30,8 +30,10 @@ class WeatherModel {
   Future<dynamic> getLocationWeather() async {
     Location location = Location();
     Position position = await location.getCurrentLocation();
-    double latitude = position.latitude;
-    double longitude = position.longitude;
+    double latitude = 31.582045;
+        latitude= position.latitude;
+    double longitude = 74.329376;
+       longitude= position.longitude;
     await location.getCurrentLocation();
 
     NetworkHelper networkHelper = NetworkHelper(

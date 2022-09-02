@@ -7,6 +7,7 @@ import 'package:weather/cards/atmosphere_quality.dart';
 import 'package:weather/screens/five_day_forecast.dart';
 import 'package:weather/services/constants.dart';
 import 'package:weather/services/weather_model.dart';
+import 'package:weather/widgets/alertDialogue.dart';
 import 'package:weather/widgets/aqi.dart';
 
 import '../widgets/day_forecast.dart';
@@ -124,6 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void updateUI() async {
+    weatherData = null;
     WeatherModel weatherModel =
         WeatherModel('https\://api.openweathermap.org/data/2.5/forecast');
     weatherData = await weatherModel.getLocationWeather();
@@ -140,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       /*Current Weather */
       double temp =
-          double.parse((weatherData['list'][0]['main']['temp']).toString());
+      double.parse((weatherData['list'][0]['main']['temp']).toString());
       temperature = temp.toInt();
       feel = double.parse(
           (weatherData['list'][0]['main']['feels_like']).toString());
@@ -263,6 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getCityWeather() async {
+    weatherData = null;
     if (_formKey.currentState!.validate()) {
       FocusManager.instance.primaryFocus?.unfocus();
       WeatherModel weatherModel =
@@ -278,6 +281,9 @@ class _HomeScreenState extends State<HomeScreen> {
           humidity = 0;
           atm = 0;
           speed = 0;
+          updateUI();
+          weatherFieldController.clear();
+          alertDialogue(context);
           return;
         }
         /*Current Weather */
@@ -293,7 +299,6 @@ class _HomeScreenState extends State<HomeScreen> {
             double.parse((weatherData['list'][0]['wind']['speed']).toString());
         isCity = true;
         /*Current Weather */
-
         /*Today Weather */
         today_min = double.parse(
             (weatherData['list'][0]['main']['temp_min']).toString());
@@ -378,7 +383,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           IconButton(
                               onPressed: () {
-                                weatherFieldController.clear();
+                                setState(() {
+                                  weatherData == null;
+                                  weatherFieldController.clear();
+                                });
                                 updateUI();
                               },
                               icon: Icon(
