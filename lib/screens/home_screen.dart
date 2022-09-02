@@ -287,7 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return;
         }
         /*Current Weather */
-        double temp = weatherData['list'][0]['main']['temp'];
+        double temp = double.parse((weatherData['list'][0]['main']['temp']).toString());
         temperature = temp.toInt();
         feel = double.parse(
             (weatherData['list'][0]['main']['feels_like']).toString());
@@ -331,6 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
         lon = double.parse((weatherData['city']['coord']['lon']).toString());
         getAQI(lat, lon);
         getHourlyData();
+        weatherFieldController.clear();
       });
     }
   }

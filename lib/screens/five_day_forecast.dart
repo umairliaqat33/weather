@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:weather/widgets/daily_forecast.dart';
 
 // ignore: must_be_immutable
@@ -42,16 +41,19 @@ class FiveDayForecast extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
-            height: height * 0.199,
-            child: ListView.builder(
+            SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (BuildContext context, int index) {
-                return DailyForecast(height, index * 8, city, isCity);
-              },
+              child: Row(
+                children: [
+                  DailyForecast(height, 1, city, isCity),
+                  DailyForecast(height, 8, city, isCity),
+                  DailyForecast(height, 15, city, isCity),
+                  DailyForecast(height, 23, city, isCity),
+                  DailyForecast(height, 31, city, isCity),
+                ],
+              ),
             ),
-          )
+
         ],
       ),
     );

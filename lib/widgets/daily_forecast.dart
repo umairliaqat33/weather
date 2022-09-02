@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import '../services/weather_model.dart';
@@ -24,19 +25,19 @@ class _DailyForecastState extends State<DailyForecast> {
 
   double speed = 0;
   String weekDay(int? dayNumb){
-    if(dayNumb==0){
+    if(dayNumb==1){
       return "Monday";
-    }else if(dayNumb==1){
-      return "Tuesday";
     }else if(dayNumb==2){
-      return "Wednesday";
+      return "Tuesday";
     }else if(dayNumb==3){
-      return "Thursday";
+      return "Wednesday";
     }else if(dayNumb==4){
-      return "Friday";
+      return "Thursday";
     }else if(dayNumb==5){
-      return "Saturday";
+      return "Friday";
     }else if(dayNumb==6){
+      return "Saturday";
+    }else if(dayNumb==7){
       return "Sunday";
     }else{
       return "null";
@@ -49,20 +50,20 @@ class _DailyForecastState extends State<DailyForecast> {
         ? await weatherModel.getCityWeather(widget.city)
         : await weatherModel.getLocationWeather());
     setState(() {
-      print(widget.index);
-      print(widget.isCity);
-      print(widget.city);
+      // print(widget.index);
+      // print(widget.isCity);
+      // print(widget.city);
       temp = weatherData['list'][widget.index]['main']['temp'];
       time = weekDay(
           (DateTime.tryParse(weatherData['list'][widget.index]['dt_txt'])
               ?.weekday));
+      print(weatherData['list'][widget.index]['dt_txt']);
+      print(time);
       speed = double.parse(
           (weatherData['list'][widget.index]['wind']['speed']).toString());
       condition = weatherData['list'][widget.index]['weather'][0]['main'];
-      print((DateTime.tryParse(weatherData['list'][widget.index]['dt_txt'])
-          ?.weekday));
-      print(condition);
-      print(weatherData['list'][widget.index]['dt_txt']);
+      // print((DateTime.tryParse(weatherData['list'][widget.index]['dt_txt'])
+      //     ?.weekday));
     });
   }
 
@@ -87,9 +88,14 @@ class _DailyForecastState extends State<DailyForecast> {
   }
   @override
   Widget build(BuildContext context) {
-    return weatherData==null?CircularProgressIndicator(): Container(
-            height: 100,
-            padding: EdgeInsets.all(16),
+    return weatherData == null
+        ? Container(
+      padding: EdgeInsets.all(16),
+      child: CircularProgressIndicator(),
+          )
+        : Container(
+            height: 190,
+            padding: EdgeInsets.all(10),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
