@@ -18,6 +18,10 @@ class Location {
         await Future.delayed(Duration(seconds: 2));
         exit(0);
         SystemNavigator.pop();
+      }else if(locationPermission.isPermanentlyDenied){
+        Fluttertoast.showToast(msg: "Location permission required please try again in settings");
+        await Future.delayed(Duration(seconds: 2));
+        openAppSettings();
       }
     } catch (e) {
       print(e);
