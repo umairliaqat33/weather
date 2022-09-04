@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:weather/widgets/daily_forecast.dart';
 
 // ignore: must_be_immutable

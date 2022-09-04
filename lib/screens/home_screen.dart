@@ -1,7 +1,8 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
+
 import 'package:weather/cards/air_quality.dart';
 import 'package:weather/cards/atmosphere_quality.dart';
 import 'package:weather/screens/five_day_forecast.dart';
@@ -9,7 +10,6 @@ import 'package:weather/services/constants.dart';
 import 'package:weather/services/weather_model.dart';
 import 'package:weather/widgets/alertDialogue.dart';
 import 'package:weather/widgets/aqi.dart';
-
 import '../widgets/day_forecast.dart';
 import '../widgets/hourly_forecast.dart';
 
@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   double lat = 0;
   double lon = 0;
   var weatherData;
+  String city="";
   final weatherFieldController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   var weatherDataAqi;
@@ -282,6 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
           atm = 0;
           speed = 0;
           updateUI();
+          city=weatherFieldController.text;
           weatherFieldController.clear();
           alertDialogue(context);
           return;
@@ -331,6 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
         lon = double.parse((weatherData['city']['coord']['lon']).toString());
         getAQI(lat, lon);
         getHourlyData();
+        city=weatherFieldController.text;
         weatherFieldController.clear();
       });
     }
@@ -386,6 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               onPressed: () {
                                 setState(() {
                                   weatherData == null;
+                                  city=weatherFieldController.text;
                                   weatherFieldController.clear();
                                 });
                                 updateUI();
@@ -446,7 +450,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(
                               temperature.toString(),
                               style: TextStyle(
-                                // fontFamily: "Cairo Light",
                                 color: Color(0xffFDFDFD),
                                 fontSize: height * 0.15,
                               ),
@@ -459,7 +462,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   FontFeature.superscripts(),
                                 ],
                                 color: Color(0xffFDFDFD),
-                                // fontSize: height * 0.15,
                               ),
                             ),
                           ],
@@ -540,7 +542,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   MaterialPageRoute(
                                     builder: (context) => FiveDayForecast(
                                         isCity,
-                                        weatherFieldController.text,
+                                        city,
                                         height),
                                   ),
                                 );

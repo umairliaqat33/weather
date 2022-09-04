@@ -12,12 +12,16 @@ alertDialogue(BuildContext context) {
           content: Text("You entered wrong name. Please try again"),
           actions: [
             TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("Retry",style: TextStyle(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                "Retry",
+                style: TextStyle(
                   color: Colors.black,
-                ),)),
+                ),
+              ),
+            ),
           ],
         );
       });

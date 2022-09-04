@@ -50,20 +50,13 @@ class _DailyForecastState extends State<DailyForecast> {
         ? await weatherModel.getCityWeather(widget.city)
         : await weatherModel.getLocationWeather());
     setState(() {
-      // print(widget.index);
-      // print(widget.isCity);
-      // print(widget.city);
-      temp = weatherData['list'][widget.index]['main']['temp'];
+      temp = weatherData ['list'][widget.index]['main']['temp'];
       time = weekDay(
           (DateTime.tryParse(weatherData['list'][widget.index]['dt_txt'])
               ?.weekday));
-      print(weatherData['list'][widget.index]['dt_txt']);
-      print(time);
       speed = double.parse(
-          (weatherData['list'][widget.index]['wind']['speed']).toString());
-      condition = weatherData['list'][widget.index]['weather'][0]['main'];
-      // print((DateTime.tryParse(weatherData['list'][widget.index]['dt_txt'])
-      //     ?.weekday));
+          (weatherData ['list'][widget.index]['wind']['speed']).toString());
+      condition = weatherData ['list'][widget.index]['weather'][0]['main'];
     });
   }
 
