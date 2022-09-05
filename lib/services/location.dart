@@ -15,14 +15,11 @@ class Location {
             desiredAccuracy: LocationAccuracy.high);
         return position;
       } else if (locationPermission.isDenied) {
-        Fluttertoast.showToast(msg: "Location permission required please try again");
-        await Future.delayed(Duration(seconds: 2));
-        exit(0);
-        SystemNavigator.pop();
+        Position position=Position(longitude: 74.329376, latitude:  31.582045, timestamp: null, accuracy: 1, altitude: 1, heading: 1, speed: 1, speedAccuracy: 1);
+        return position;
       }else if(locationPermission.isPermanentlyDenied){
-        Fluttertoast.showToast(msg: "Location permission required please try again in settings");
-        await Future.delayed(Duration(seconds: 2));
-        openAppSettings();
+        Position position=Position(longitude: 74.329376, latitude:  31.582045, timestamp: null, accuracy: 1, altitude: 1, heading: 1, speed: 1, speedAccuracy: 1);
+        return position;
       }
     } catch (e) {
       print(e);

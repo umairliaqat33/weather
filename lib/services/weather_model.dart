@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'location.dart';
 import 'networking.dart';
@@ -28,18 +29,25 @@ class WeatherModel {
   }
 
   Future<dynamic> getLocationWeather() async {
-    Location location = Location();
-    Position position = await location.getCurrentLocation();
     double latitude = 31.582045;
-        latitude= position.latitude;
     double longitude = 74.329376;
-       longitude= position.longitude;
-    await location.getCurrentLocation();
+    if (PermissionStatus == PermissionStatus.denied) {
+      print("permission denied");
+      NetworkHelper networkHelper = NetworkHelper(
+          '$openWeatherMapURL?lat=${latitude}&lon=${longitude}&appid=$apiKey&units=metric');
+      var weatherData = await networkHelper.getData();
+      return weatherData;
+    } else {
+      Location location = Location();
+      Position position = await location.getCurrentLocation();
+      latitude = position.latitude;
+      longitude = position.longitude;
 
-    NetworkHelper networkHelper = NetworkHelper(
-        '$openWeatherMapURL?lat=${latitude}&lon=${longitude}&appid=$apiKey&units=metric');
+      NetworkHelper networkHelper = NetworkHelper(
+          '$openWeatherMapURL?lat=${latitude}&lon=${longitude}&appid=$apiKey&units=metric');
 
-    var weatherData = await networkHelper.getData();
-    return weatherData;
+      var weatherData = await networkHelper.getData();
+      return weatherData;
+    }
   }
 }
